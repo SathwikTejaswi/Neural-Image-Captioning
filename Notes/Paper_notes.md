@@ -13,5 +13,5 @@ BLEU stands for bilingual evaluaton understudy. It is used for rating the machin
 BLEU scores are between 0 to 1, where 1 indicates a very good translation score. BLEU uses can use a unigram(rarely) or an n-gram approach to compare the actual sentences with the candidate translations. BLEU makes use of a metric very similar to the precision score.
 
 ### Optimization Problem
-&theta;</sub>(*) = 
-h<sub>&theta;</sub>(x) = &theta;<sub>o</sub> x + &theta;<sub>1</sub>x
+argmax<sub>$theta  
+
