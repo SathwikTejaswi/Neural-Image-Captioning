@@ -14,4 +14,4 @@ BLEU scores are between 0 to 1, where 1 indicates a very good translation score.
 
 ### Optimization Problem
 
-![Eqn]()
+![Eqn](https://github.com/SathwikTejaswi/Neural-Image-Captioning/blob/master/Notes/Screen%20Shot%202018-11-15%20at%2000.41.00.png)
