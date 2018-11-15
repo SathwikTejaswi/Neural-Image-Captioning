@@ -14,7 +14,6 @@ BLEU scores are between 0 to 1, where 1 indicates a very good translation score.
 
 ### Optimization Problem
 
-\theta^{*} = argmax_{\theta}
+\theta^{*} = argmax_{\theta} 
 
-
-$z = x + y$
+$(x, y, \theta)$
