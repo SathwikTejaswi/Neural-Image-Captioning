@@ -15,3 +15,5 @@ BLEU scores are between 0 to 1, where 1 indicates a very good translation score.
 ### Optimization Problem
 
 ![Eqn](https://github.com/SathwikTejaswi/Neural-Image-Captioning/blob/master/Notes/Screen%20Shot%202018-11-15%20at%2000.41.00.png)
+
+Hence we are trying to find the optimal theta such that we maximize the log likelihood of generating that particular descrition for that image given.
