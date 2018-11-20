@@ -3,16 +3,20 @@ import torch.nn as nn
 import torchvision.models as models
 from torch.nn.utils.rnn import pack_padded_sequence
 
-
-
 # build the encoder
 
 class Encoder(nn.Module):
     def __init__(self, embed_size):
-        """We will be using a pretrained inception 3 model that is available within the pytorch frame work and replace top fc layer.
-        V3 = the pretrained inception
-        modules = all the layers of V3 except for the last layer of V3"""
         super(EncoderCNN, self).__init__()
+        
+        """
+        We will be using a pretrained inception 3 model that is available within the pytorch frame work and replace 
+        top fc layer. 
+        
+        V3 = the pretrained inception
+        modules = all the layers of V3 except for the last layer of V3
+        """
+        
         V3 = models.inception_v3(pretrained=True)
         modules = list(V3.children())[:-1]      # delete the last fc layer.
         self.V3 = nn.Sequential(*modules)
@@ -20,24 +24,32 @@ class Encoder(nn.Module):
         self.bn = nn.BatchNorm1d(embed_size, momentum=0.01)
         
     def forward(self, images):
-        """Forward pass the data through V3 in order to get the final embedding from the network"""
+        """
+        To be able to prevent over fitting, we want the retain the weights on every layer of the V3 except.
+        """
+        #do not train V3.
         with torch.no_grad():
-            features = self.resnet(images)
+            features = self.V3(images)
+        
+        # only train the linear layer that gives us the embedding.
         features = features.reshape(features.size(0), -1)
         features = self.bn(self.linear(features))
         return features
 
 
 class DecoderRNN(nn.Module):
-    def __init__(self, embed_size, hidden_size, vocab_size, num_layers, max_seq_length=20):
-        """Set the hyper-parameters and build the layers.
-        parameters :
-        embed_size
-        hidden_size
-        vocab_size
-        num_layers
-        max_seq_length
-        -------------- """
+    def __init__(self, vocab_size, num_layers=1, max_seq_length=20, embed_size=512, hidden_size=200):
+        """
+        Set the hyper-parameters and build the layers.
+        --------------
+        Hyper-Parameters :
+        embed_size = 512 (default)
+        hidden_size = 512 (default)
+        vocab_size = depends on dataset
+        num_layers = 1 (default)
+        max_seq_length = 20 (default)
+        -------------- 
+        """
         super(DecoderRNN, self).__init__()
         self.embed = nn.Embedding(vocab_size, embed_size)
         self.lstm = nn.LSTM(embed_size, hidden_size, num_layers, batch_first=True)
@@ -45,7 +57,9 @@ class DecoderRNN(nn.Module):
         self.max_seg_length = max_seq_length
         
     def forward(self, features, captions, lengths):
-        """Use the Decoder """
+        """
+        Use the Decoder 
+        """
         embeddings = self.embed(captions)
         embeddings = torch.cat((features.unsqueeze(1), embeddings), 1)
         packed = pack_padded_sequence(embeddings, lengths, batch_first=True) 
@@ -53,8 +67,10 @@ class DecoderRNN(nn.Module):
         outputs = self.linear(hiddens[0])
         return outputs
     
-    def sample(self, features, states=None):
-        """Generate captions for given image features using greedy search."""
+    def greedy_sample(self, features, states=None):
+        """
+        Generate captions for given image features using greedy search.
+        """
         sampled_ids = []
         inputs = features.unsqueeze(1)
         for i in range(self.max_seg_length):
@@ -67,3 +83,14 @@ class DecoderRNN(nn.Module):
         sampled_ids = torch.stack(sampled_ids, 1)                # sampled_ids: (batch_size, max_seq_length)
         return sampled_ids
 
+    def beam_search_sample(self, features, states=None):
+        """
+        Generate captions for given image features using beam search algorithm.
+        """
+        return pass
+    
+    def diverse_beam_search(self,features, states=None):
+        """
+        Generate captions for given image features using diverse beam search.
+        """
+        return pass
