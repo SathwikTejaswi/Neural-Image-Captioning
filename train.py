@@ -4,11 +4,11 @@ import torch.nn as nn
 import numpy as np
 import os
 import pickle
-from data_loader import get_loader 
+#from data_loader import get_loader 
+from torchvision import transforms
 from build_vocab import Vocabulary
 from model import EncoderCNN, DecoderRNN
 from torch.nn.utils.rnn import pack_padded_sequence
-from torchvision import transforms
 
 
 # Device configuration
@@ -20,12 +20,7 @@ def main(args):
         os.makedirs(args.model_path)
     
     # Image preprocessing, normalization for the pretrained resnet
-    transform = transforms.Compose([ 
-        transforms.RandomCrop(args.crop_size),
-        transforms.RandomHorizontalFlip(), 
-        transforms.ToTensor(), 
-        transforms.Normalize((0.485, 0.456, 0.406), 
-                             (0.229, 0.224, 0.225))])
+    transform = transforms.Compose([transforms.RandomCrop(args.crop_size), transforms.RandomHorizontalFlip(), transforms.ToTensor(), transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))])
     
     # Load vocabulary wrapper
     with open(args.vocab_path, 'rb') as f:
