@@ -48,19 +48,19 @@ def get_args():
 
 def get_default():
     arg = {}
-    arg['model_path'] = 
-    arg['crop_size'] = 
-    arg['vocab_path'] = 
-    arg['image_dir'] = 
-    arg['caption_path'] = 
-    arg['log_step'] = 
-    arg['save_step'] = 
-    arg['embed_size'] = 
-    arg['hidden_size'] = 
-    arg['num_layers'] = 
-    arg['num_epochs'] = 
-    arg['batch_size'] = 
-    arg['num_workers'] = 
-    arg['learning_rate'] = 
+    arg['model_path'] = 'models/'
+    arg['crop_size'] = 224
+    arg['vocab_path'] = 'data/vocab.pkl'
+    arg['image_dir'] = 'data/resized2014'
+    arg['caption_path'] = 'data/annotations/captions_train2014.json'
+    arg['log_step'] = 10
+    arg['save_step'] = 1000
+    arg['embed_size'] = 256
+    arg['hidden_size'] = 512
+    arg['num_layers'] = 1
+    arg['num_epochs'] = 5
+    arg['batch_size'] = 128
+    arg['num_workers'] = 2
+    arg['learning_rate'] = 0.001
     
     return(arg)
