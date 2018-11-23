@@ -83,11 +83,38 @@ class DecoderRNN(nn.Module):
         sampled_ids = torch.stack(sampled_ids, 1)                # sampled_ids: (batch_size, max_seq_length)
         return sampled_ids
 
-    def beam_search_sample(self, features, states=None):
+    def beam_search_sample(self, features, beam_size = 3,states=None):
         """
         Generate captions for given image features using beam search algorithm.
         """
-        return pass
+        sampled_ids = None
+        inputs = [features.unsqueeze(1)]
+        
+        for idx1 in range(self.max_seg_length):
+            O = None
+            for idx2 in inputs :
+                hiddens, states = self.lstm(idx2, states)            # hiddens: (batch_size, 1, hidden_size)
+                outputs = self.linear(hiddens.squeeze(1))            # outputs:  (batch_size, vocab_size)               
+                if O == None:
+                    O = outputs
+                else:
+                    O = torch.cat(O,outputs)
+            
+            _,preds = torch.sort(O,1,descending=True)                # preds: (batch_size,vocab_size)
+            preds = preds[:,0:beam_size]                             # preds: (batch_size,beam_size)
+            preds = ((preds+1)%self.vocab_size)-1
+            
+            if sampled_ids == None:
+                sampled_ids = preds
+            else:
+                sampled_ids = torch.stack((sampled_ids,preds))
+                
+            inputs = []                                           
+            for k in range(beam_size):
+                inputs.append(self.embed(preds[:,k]).unsqueeze(1))
+                
+            
+        return sampled_ids
     
     def diverse_beam_search(self,features, states=None):
         """
