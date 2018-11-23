@@ -45,3 +45,22 @@ def get_args():
     arg['learning_rate'] = int(input())
     
     return(args)
+
+def get_default():
+    arg = {}
+    arg['model_path'] = 
+    arg['crop_size'] = 
+    arg['vocab_path'] = 
+    arg['image_dir'] = 
+    arg['caption_path'] = 
+    arg['log_step'] = 
+    arg['save_step'] = 
+    arg['embed_size'] = 
+    arg['hidden_size'] = 
+    arg['num_layers'] = 
+    arg['num_epochs'] = 
+    arg['batch_size'] = 
+    arg['num_workers'] = 
+    arg['learning_rate'] = 
+    
+    return(arg)
