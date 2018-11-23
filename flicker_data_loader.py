@@ -112,9 +112,3 @@ def get_loader(root, json, vocab, transform, batch_size, shuffle, num_workers):
                                               num_workers=num_workers,
                                               collate_fn=collate_fn)
     return data_loader
-
-
-
-
-
-
