@@ -95,7 +95,3 @@ for epoch in range(num_epochs):
                 model_path, 'decoder-{}-{}.ckpt'.format(epoch+1, i+1)))
             torch.save(encoder.state_dict(), os.path.join(
                 model_path, 'encoder-{}-{}.ckpt'.format(epoch+1, i+1)))
-
-
-
-    
