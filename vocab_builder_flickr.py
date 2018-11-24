@@ -35,7 +35,7 @@ class Vocabulary(object):
 
 def build_vocab(annotation_path, threshold):
     """Build a simple vocabulary wrapper."""
-    
+    counter = Counter()
     annotations = pd.read_table(annotation_path , sep='\t', header=None, names=['image', 'caption'])
     annotations['image_num'] = annotations['image'].map(lambda x: x.split('#')[1])
     annotations['image'] = annotations['image'].map(lambda x: x.split('#')[0])
